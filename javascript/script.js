@@ -8,6 +8,12 @@ var title = document.getElementById('gameTitle');
 var desc = document.getElementById('gameDesc');
 var images = document.getElementById('user_choice');
 
+// Graph 
+var uRock = 50;
+var uPaper = 50;
+var uScissors = 50;
+
+
 btn_play.addEventListener('click',function(){
     if(user_object!=undefined){
         // do code here
@@ -31,16 +37,17 @@ function startGame(){
     title.style.visibility='hidden';
     desc.style.visibility='hidden';
     images.style.visibility='hidden';
-    var r = document.getElementById('amt1');
-    var p = document.getElementById('amt2');
-    var s = document.getElementById('amt3');
-    spawnRock(r.value);
-    spawnPaper(p.value);
-    spawnScissors(s.value);
-    r.style.visibility='hidden';
-    p.style.visibility='hidden';
-    s.style.visibility='hidden';
+    // spawnRock(uRock);
+    // spawnPaper(uPaper);
+    // spawnScissors(uScissors);
+    spawnRock(uRock);
+    spawnPaper(uPaper);
+    spawnScissors(uScissors);
+    // r.style.visibility='hidden';
+    // p.style.visibility='hidden';
+    // s.style.visibility='hidden';
     countDown();
+    updateGraph(uRock, uPaper, uScissors);
 }
 
 function countDown(){
@@ -65,7 +72,7 @@ function spawnRock(amt){
     for(i=0; i<amt; i++){
         var rock = document.createElement('img');
         rock.id = "rock"+i;
-        rock.className="objects";
+        rock.className="rock";
         document.body.append(rock);
         var pageWidth = document.body.scrollWidth;
         var pageHeight = document.body.scrollHeight;
@@ -75,7 +82,7 @@ function spawnRock(amt){
         rock.style.left = randomWidth;
         rock.src = "images/rock.png";
         rock.addEventListener('mouseenter',(e) => {collision(rock,e)});
-        setInterval(moveAround,3000,rock)
+        setInterval(moveAround,1500,rock)
     }
 }
 
@@ -83,7 +90,7 @@ function spawnPaper(amt){
        for(i=0; i<amt; i++){
         var paper = document.createElement('img');
         paper.id = "paper"+i;
-        paper.className="objects";
+        paper.className="paper";
         document.body.append(paper);
         var pageWidth = document.body.scrollWidth;
         var pageHeight = document.body.scrollHeight;
@@ -93,8 +100,8 @@ function spawnPaper(amt){
         paper.style.left = randomWidth;
         paper.src = "images/paper.png";
         // paper.innerHTML=`${randomHeight}, ${randomWidth}`;
-        paper.addEventListener('mouseenter',(e) => {collision(paper,e)});
-        setInterval(moveAround,3000,paper)
+        paper.addEventListener('mouseenter',(e) => {collision(paper,e);});
+        setInterval(moveAround,2000,paper)
     } 
 }
 
@@ -102,7 +109,7 @@ function spawnScissors(amt){
     for(i=0; i<amt; i++){
         var scissors = document.createElement('img');
         scissors.id = "scissors"+i;
-        scissors.className="objects";
+        scissors.className="scissors";
         document.body.append(scissors);
         var pageWidth = document.body.scrollWidth;
         var pageHeight = document.body.scrollHeight;
@@ -118,20 +125,22 @@ function spawnScissors(amt){
 }
 
 function collision(collided,e){
+    // Changes images of objects on collision
     var col = e.path[0]; //from event get the layers of elements
     var id = col.id.replace(/[0-9]/g, ''); //strip the numeric id from the end of the string
     var nc = document.getElementById('newCursor');
 
-    if(user_object=="rock"&&id=="scissors"){col.src="images/rock.png";col.id="rock";}
+    if(user_object=="rock"&&id=="scissors"){col.src="images/rock.png";col.className="rock";uRock++;uScissors--;}
     if(user_object=="rock"&&id=="paper"){nc.src="images/paper.png";user_object="paper";}
     
-    if(user_object=="paper"&&id=="rock"){col.src="images/paper.png";col.id="paper";}
+    if(user_object=="paper"&&id=="rock"){col.src="images/paper.png";col.className="paper";uPaper++;uRock--;}
     if(user_object=="paper"&&id=="scissors"){nc.src="images/scissors.png";user_object="scissors";}
     
-    if(user_object=="scissors"&&id=="paper"){col.src="images/scissors.png";col.id="scissors";}
+    if(user_object=="scissors"&&id=="paper"){col.src="images/scissors.png";col.className="scissors";uScissors++;uPaper--;}
     if(user_object=="scissors"&&id=="rock"){nc.src="images/rock.png";user_object="rock";}
-}
 
+    updateGraph(uRock, uPaper, uScissors);
+}
 function errorSelect(){
     alert("You must select an object to play as before running the game.")
 }
@@ -139,7 +148,7 @@ function errorSelect(){
 var new_cursor = document.getElementById('newCursor');
 function selected(obj){
     // update the page cursor to be what the user clicked
-    user_object=obj.id;
+    user_object=obj.id.replace("select_",'');;
     document.body.style.cursor = 'none';
     new_cursor.src = obj.src;
 }
@@ -152,6 +161,7 @@ document.addEventListener('mousemove', function(e) {
 });
 
 function moveAround(obj){
+    updateGraph(uRock, uPaper, uScissors);
     var pgWid = document.body.scrollWidth;
     var pgHei = document.body.scrollHeight;
     var ranWid = Math.floor(Math.random() * pgWid);
@@ -163,6 +173,7 @@ function moveAround(obj){
 
 
 window.addEventListener('load',function(){
+    updateGraph(uRock, uPaper, uScissors);
     var ico = 1;
     setInterval(function(){
         if(ico==1){
@@ -182,3 +193,38 @@ window.addEventListener('load',function(){
         }
     }, 500);
 });
+
+function updateGraph(r,p,s){
+    // Updates grapph colors
+    var gRock = document.getElementById('graph_rock');
+    var gPaper = document.getElementById('graph_paper');
+    var gScissors = document.getElementById('graph_scissors');
+    if(r==0){gRock.innerHTML="";}else{gRock.innerHTML=r;}
+    if(p==0){gPaper.innerHTML="";}else{gPaper.innerHTML=p;}
+    if(s==0){gScissors.innerHTML="";}else{gScissors.innerHTML=s;}
+    gRock.style.height = r*300;
+    gPaper.style.height = p*300;
+    gScissors.style.height = s*300;
+}
+
+function removeRock(){
+    const rocks = document.querySelectorAll('.rock');
+    rocks.forEach(rock => {
+        rock.remove();
+    });
+    uRock=0;
+}
+function removePaper(){
+    const papers = document.querySelectorAll('.paper');
+    papers.forEach(paper => {
+        paper.remove();
+    });
+    uPaper=0;
+}
+function removeScissors(){
+    const scissors = document.querySelectorAll('.scissors');
+    scissors.forEach(scissor => {
+        scissor.remove();
+    });
+    uScissors=0;
+}

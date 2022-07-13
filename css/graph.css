@@ -1,0 +1,24 @@
+#graph_top{
+    width: 30px;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    /* grid-template-rows: 33% 33% 34%; */
+    z-index: 2;
+    position: absolute;
+    left: 0;
+}
+#graph_top>div{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s ease;
+}
+#graph_rock{background: rgb(59, 59, 59);}
+#graph_paper{background: rgb(161, 134, 59);}
+#graph_scissors{background: rgb(128, 0, 0);}

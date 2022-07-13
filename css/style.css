@@ -7,8 +7,9 @@ body, html{
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: url("images/bg.jpg");
+    background: url("../images/bg.jpg");
     background-size: 50%;
+    position: relative;
 }
 #btnplay{
     width: 150px;
@@ -36,7 +37,7 @@ body, html{
 #btnplay:hover{
     background: rgba(255,255,255,0.3);
 }
-.objects{
+.rock,.paper,.scissors{
     position: absolute;
     color: white;
     font-size: 1em;
@@ -91,6 +92,7 @@ body, html{
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.65);
+    z-index: 0;
 }
 
 
@@ -177,4 +179,67 @@ body, html{
 @keyframes amt {
     0%{opacity: 0; margin-top: 100px;}
     100%{opacity: 1; margin-top: 10px;}
+}
+
+
+
+/* conosle start */
+#consoleapp{
+    position: absolute;
+    width: 50px;
+    top: 0; right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+#gap{
+    margin-top: 30px;
+}
+#console_top{
+    visibility: hidden;
+    width: 500px;
+    height: 300px;
+    position: absolute;
+    background-color: black;
+    top: 70px; right: 10px;
+    border: 1px solid rgb(70, 70, 70);
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+#console_top::-webkit-scrollbar{
+    background-color: rgb(24, 24, 24);
+    width: 10px;
+}
+#console_top::-webkit-slider-thumb{
+    background-color: rgb(124, 124, 124);
+    border-radius: 50px;
+}
+#console_header{
+    position: fixed;
+    width: 500px;
+    height: 30px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 0px;
+    background: rgb(37, 37, 37);
+    display: flex;
+    justify-content: right;
+}
+#console_header>div:hover{background: rgb(53, 53, 53);}
+#console_header>div{
+    transition: 0.2s ease;
+    height: 100%;
+    width: 10%;
+    color: rgb(129, 129, 129);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+#console_text{
+    width: 100%;
+    background-color: black;
+    outline: none; border: none;
+}
+.console_reply,#console_text{
+    color: white; font-family: Consolas; font-size: 0.9em;
+    padding: 0.5px 3px 0.5px 3px;
+
 }
